@@ -1,6 +1,7 @@
 <?php
 namespace Omnipay\Skrill\Message;
 
+use GuzzleHttp\Psr7\MessageTrait;
 use Omnipay\Common\Message\AbstractResponse;
 use Omnipay\Common\Message\RedirectResponseInterface;
 
@@ -17,7 +18,7 @@ use Omnipay\Common\Message\RedirectResponseInterface;
  */
 class PaymentResponse extends AbstractResponse implements RedirectResponseInterface
 {
-    protected $headers;
+    use MessageTrait;
     /**
      * @return false
      */
@@ -74,7 +75,8 @@ class PaymentResponse extends AbstractResponse implements RedirectResponseInterf
      */
     public function getStatus()
     {
-        return (string) $this->data->getHeader('X-Skrill-Status');
+        $data = $this->getHeader('X-Skrill-Status');
+        return (string) !empty($data) && !is_array($data) ? $data : '';
     }
 
     /**
@@ -101,11 +103,7 @@ class PaymentResponse extends AbstractResponse implements RedirectResponseInterf
 
     public function getSetCookie()
     {
-        return (string) $this->getHeader('Set-Cookie');
-    }
-
-    public function getHeader($header)
-    {
-        return $this->headers[$header];
+        $data = $this->getHeader('Set-Cookie');
+        return (string) !empty($data) && !is_array($data) ? $data : '';
     }
 }
