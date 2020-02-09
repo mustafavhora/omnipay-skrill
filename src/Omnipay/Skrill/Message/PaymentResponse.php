@@ -17,6 +17,7 @@ use Omnipay\Common\Message\RedirectResponseInterface;
  */
 class PaymentResponse extends AbstractResponse implements RedirectResponseInterface
 {
+    protected $headers;
     /**
      * @return false
      */
@@ -61,7 +62,7 @@ class PaymentResponse extends AbstractResponse implements RedirectResponseInterf
      */
     public function getSessionId()
     {
-        return preg_match('~SESSION_ID=([0-9a-fA-F]+)~', $this->data->getSetCookie(), $matches)
+        return preg_match('~SESSION_ID=([0-9a-fA-F]+)~', $this->getSetCookie(), $matches)
             ? $matches[1]
             : null;
     }
@@ -96,5 +97,15 @@ class PaymentResponse extends AbstractResponse implements RedirectResponseInterf
     {
         $statusTokens = explode(':', $this->getStatus());
         return array_pop($statusTokens) ?: null;
+    }
+
+    public function getSetCookie()
+    {
+        return (string) $this->getHeader('Set-Cookie');
+    }
+
+    public function getHeader($header)
+    {
+        return $this->headers[$header];
     }
 }

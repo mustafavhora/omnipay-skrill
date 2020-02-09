@@ -1,4 +1,5 @@
 <?php
+
 namespace Omnipay\Skrill\Message;
 
 use DateTime;
@@ -336,8 +337,8 @@ class PaymentRequest extends AbstractRequest
      * Get whether the merchant show their customers the gateway page without the
      * prominent login section.
      *
-     * @deprecated On the new payment page, the login fields are hidden by default.
      * @return bool hide login
+     * @deprecated On the new payment page, the login fields are hidden by default.
      */
     public function getHideLogin()
     {
@@ -348,11 +349,11 @@ class PaymentRequest extends AbstractRequest
      * Set whether the merchant show their customers the gateway page without the
      * prominent login section.
      *
-     * @deprecated On the new payment page, the login fields are hidden by default.
-     *
-     * @param  bool $value hide login
+     * @param bool $value hide login
      *
      * @return self
+     * @deprecated On the new payment page, the login fields are hidden by default.
+     *
      */
     public function setHideLogin($value)
     {
@@ -839,7 +840,7 @@ class PaymentRequest extends AbstractRequest
      * Set the list of payment method codes, indicating the payment methods to be
      * presented to the customer.
      *
-     * @param  array $value payment methods
+     * @param array $value payment methods
      *
      * @return self
      */
@@ -854,7 +855,7 @@ class PaymentRequest extends AbstractRequest
      *
      * Warning: this resets any previously set payment methods.
      *
-     * @param  string $value payment method
+     * @param string $value payment method
      *
      * @return self
      */
@@ -874,62 +875,62 @@ class PaymentRequest extends AbstractRequest
         $this->validate('email', 'language', 'amount', 'currency', 'details');
 
         // merchant details
-        $data['pay_to_email'] = $this->getEmail();
-        $data['language'] = $this->getLanguage();
+        $data['pay_to_email']          = $this->getEmail();
+        $data['language']              = $this->getLanguage();
         $data['recipient_description'] = $this->getRecipientDescription();
-        $data['transaction_id'] = $this->getTransactionId();
-        $data['return_url'] = $this->getReturnUrl();
-        $data['return_url_text'] = $this->getReturnUrlText();
-        $data['return_url_target'] = $this->getReturnUrlTarget();
-        $data['cancel_url'] = $this->getCancelUrl();
-        $data['cancel_url_target'] = $this->getCancelUrlTarget();
-        $data['status_url'] = $this->getNotifyUrl();
-        $data['status_url2'] = $this->getNotifyUrl2();
-        $data['new_window_redirect'] = $this->getNewWindowRedirect() ? 1 : 0;
-        $data['hide_login'] = $this->getHideLogin() ? 1 : 0;
-        $data['confirmation_note'] = $this->getConfirmationNote();
-        $data['logo_url'] = $this->getLogoUrl();
-        $data['prepare_only'] = 1;
-        $data['rid'] = $this->getReferralId();
-        $data['ext_ref_id'] = $this->getExtReferralId();
+        $data['transaction_id']        = $this->getTransactionId();
+        $data['return_url']            = $this->getReturnUrl();
+        $data['return_url_text']       = $this->getReturnUrlText();
+        $data['return_url_target']     = $this->getReturnUrlTarget();
+        $data['cancel_url']            = $this->getCancelUrl();
+        $data['cancel_url_target']     = $this->getCancelUrlTarget();
+        $data['status_url']            = $this->getNotifyUrl();
+        $data['status_url2']           = $this->getNotifyUrl2();
+        $data['new_window_redirect']   = $this->getNewWindowRedirect() ? 1 : 0;
+        $data['hide_login']            = $this->getHideLogin() ? 1 : 0;
+        $data['confirmation_note']     = $this->getConfirmationNote();
+        $data['logo_url']              = $this->getLogoUrl();
+        $data['prepare_only']          = 1;
+        $data['rid']                   = $this->getReferralId();
+        $data['ext_ref_id']            = $this->getExtReferralId();
 
         $merchantFields = $this->getMerchantFields();
         if (is_array($merchantFields)) {
             $data['merchant_fields'] = implode(',', array_keys($merchantFields));
             foreach ($merchantFields as $field => $value) {
-                $data[$field] = $value;
+                $data[ $field ] = $value;
             }
         }
 
         // customer details
         $data['pay_from_email'] = $this->getCustomerEmail();
-        $data['title'] = $this->getCustomerTitle();
-        $data['firstname'] = $this->getCustomerFirstName();
-        $data['lastname'] = $this->getCustomerLastName();
+        $data['title']          = $this->getCustomerTitle();
+        $data['firstname']      = $this->getCustomerFirstName();
+        $data['lastname']       = $this->getCustomerLastName();
 
         $customerBirthday = $this->getCustomerBirthday();
         if ($customerBirthday) {
             $data['date_of_birth'] = $customerBirthday->format('dmY');
         }
 
-        $data['address'] = $this->getCustomerAddress1();
-        $data['address2'] = $this->getCustomerAddress2();
+        $data['address']      = $this->getCustomerAddress1();
+        $data['address2']     = $this->getCustomerAddress2();
         $data['phone_number'] = $this->getCustomerPhone();
-        $data['postal_code'] = $this->getCustomerPostalCode();
-        $data['city'] = $this->getCustomerCity();
-        $data['state'] = $this->getCustomerState();
-        $data['country'] = $this->getCustomerCountry();
+        $data['postal_code']  = $this->getCustomerPostalCode();
+        $data['city']         = $this->getCustomerCity();
+        $data['state']        = $this->getCustomerState();
+        $data['country']      = $this->getCustomerCountry();
 
         // payment details
-        $data['amount'] = rtrim(rtrim($this->getAmount(), '0'), '.');
+        $data['amount']   = rtrim(rtrim($this->getAmount(), '0'), '.');
         $data['currency'] = $this->getCurrency();
 
         $amountDescriptions = $this->getAmountDescriptions();
         if (is_array($amountDescriptions)) {
             $counter = 2;
             foreach ($amountDescriptions as $description => $amount) {
-                $data['amount' . $counter . '_description'] = $description;
-                $data['amount' . $counter] = $amount;
+                $data[ 'amount' . $counter . '_description' ] = $description;
+                $data[ 'amount' . $counter ]                  = $amount;
                 $counter++;
             }
         }
@@ -937,8 +938,8 @@ class PaymentRequest extends AbstractRequest
         $details = $this->getDetails();
         $counter = 1;
         foreach ($details as $description => $text) {
-            $data['detail' . $counter . '_description'] = $description;
-            $data['detail' . $counter . '_text'] = $text;
+            $data[ 'detail' . $counter . '_description' ] = $description;
+            $data[ 'detail' . $counter . '_text' ]        = $text;
             $counter++;
         }
 
@@ -952,14 +953,14 @@ class PaymentRequest extends AbstractRequest
     }
 
     /**
-     * @param  array $data payment data to send
+     * @param array $data payment data to send
      *
      * @return PaymentResponse         payment response
      */
     public function sendData($data)
     {
-        $httpResponse = $this->httpClient->request($this->getEndpoint(), null, $data);
-
+        $data         = http_build_query($data);
+        $httpResponse = $this->httpClient->request('post', $this->getEndpoint(), [], $data);
         return $this->response = new PaymentResponse($this, $httpResponse);
     }
 
