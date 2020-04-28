@@ -81,9 +81,7 @@ class PaymentResponse extends AbstractResponse implements RedirectResponseInterf
             return $data;
         }
 
-        return preg_match('~SESSION_ID=([0-9a-fA-F]+)~', $this->getSetCustomCache(), $matches)
-            ? $matches[1]
-            : null;
+        return $this->getSetCustomCache();
     }
 
     /**
@@ -127,7 +125,7 @@ class PaymentResponse extends AbstractResponse implements RedirectResponseInterf
 
     public function getSetCustomCache()
     {
-        $data = Cache::get('SESSION_ID');
-        return (string)!empty($data) && !is_array($data) ? $data : '';
+        $data = \Illuminate\Support\Facades\Cache::get('SESSION_ID');
+        return (string)!empty($data) && !is_array($data) ? $data : session_id();
     }
 }
